@@ -1,0 +1,281 @@
+using System;
+
+namespace Tic_Tac_Toe
+{
+    class Program
+    {
+        //Making some Variables global to be used by different Methods
+        static int x;
+        static bool game = true;
+        static bool stopPlayer1 = false;
+        static bool stopPlayer2 = false;
+        static bool regionTaken = false;
+
+        static Random rnd = new Random();
+        //Setting up the field, note it is still not visible
+        static char[,] board = new char[3, 3]
+           {
+                {'1','2','3' },
+                {'4','5','6' },
+                {'7','8','9' }
+           };
+
+        static void Main(string[] args)
+        {
+            //greeting
+            Console.WriteLine("Welcome to Tic Tac Toe");
+            Start();
+         }
+
+        //making the board visible to the players
+        static public void Field()
+        {
+            Console.WriteLine("{0}    {1}     {2}", board[0, 0], board[0, 1], board[0, 2]);
+            Console.WriteLine("{0}    {1}     {2}", board[1, 0], board[1, 1], board[1, 2]);
+            Console.WriteLine("{0}    {1}     {2}", board[2, 0], board[2, 1], board[2, 2]);
+        }
+       
+        //resetting numbers for a restart
+        static public void ResetNumbers()
+        {
+            board[0, 0] = '1';
+            board[0, 1] = '2';
+            board[0, 2] = '3';
+            board[1, 0] = '4';
+            board[1, 1] = '5';
+            board[1, 2] = '6';
+            board[2, 0] = '7';
+            board[2, 1] = '8';
+            board[2, 2] = '9';
+        }
+
+        //setting up the game
+       static public void Start()
+        {
+            do
+            {
+                Player1();
+                //---------------------------------------------------------------------------
+                Player2();
+
+            } while (game == true);
+        }
+
+        //reset method for player 1
+         public static void Player1Reset()
+        {
+            if (stopPlayer1 == true)
+            {
+                regionTaken = false;
+                Console.WriteLine("Congratulations, Player 1 has Won");
+                Console.WriteLine("Press any key to Restart");
+                Console.ReadKey();
+                Console.Clear();
+                ResetNumbers();
+                Start();
+            }
+        }
+
+        //reset method for player 2
+        public static void Player2Reset()
+        {
+            if (stopPlayer2 == true)
+            {
+                regionTaken = false;
+                Console.WriteLine("Congratulations, Player 2 has Won");
+                Console.WriteLine("Press any key to Restart");
+                Console.ReadKey();
+                Console.Clear();
+                ResetNumbers();
+                Start();
+
+            }
+          }
+
+        //player 1 move
+        public static void Player1()
+        {
+            regionTaken = false;
+            Field();
+
+            //delcaring the first move and parsing 
+            Console.WriteLine("please make a move player 1");
+            string y = Console.ReadLine();
+            bool success1 = Int32.TryParse(y, out x);
+
+            //seeing if the spot is taken
+            if (x == 1 && board[0, 0] != '1')
+            {
+                regionTaken = true;
+            }
+            else if (x == 2 && board[0, 1] != '2')
+            {
+                regionTaken = true;
+            }
+            else if (x == 3 && board[0, 2] != '3')
+            {
+                regionTaken = true;
+            }
+            else if (x == 4 && board[1, 0] != '4')
+            {
+                regionTaken = true;
+            }
+            else if (x == 5 && board[1, 1] != '5')
+            {
+                regionTaken = true;
+            }
+            else if (x == 6 && board[1, 2] != '6')
+            {
+                regionTaken = true;
+            }
+            else if (x == 7 && board[2, 0] != '7')
+            {
+                regionTaken = true;
+            }
+            else if (x == 8 && board[2, 1] != '8')
+            {
+                regionTaken = true;
+            }
+            else if (x == 9 && board[2, 2] != '9')
+            {
+                regionTaken = true;
+            }
+
+            if (regionTaken == true)
+            {
+                Console.WriteLine("That spot is taken please try another");
+                throw new Exception("choose a correct spot");
+            }
+            if (success1)
+            {
+
+                switch (x)
+                {
+                    case 1: board[0, 0] = 'X'; break;
+                    case 2: board[0, 1] = 'X'; break;
+                    case 3: board[0, 2] = 'X'; break;
+                    case 4: board[1, 0] = 'X'; break;
+                    case 5: board[1, 1] = 'X'; break;
+                    case 6: board[1, 2] = 'X'; break;
+                    case 7: board[2, 0] = 'X'; break;
+                    case 8: board[2, 1] = 'X'; break;
+                    case 9: board[2, 2] = 'X'; break;
+
+                }
+
+                //declaring a winner
+                if (board[0, 0] == 'X' && board[1, 0] == 'X' && board[2, 0] == 'X' ||
+                   board[0, 0] == 'X' && board[0, 1] == 'X' && board[0, 2] == 'X' ||
+                   board[1, 0] == 'X' && board[1, 1] == 'X' && board[1, 2] == 'X' ||
+                   board[2, 0] == 'X' && board[2, 1] == 'X' && board[2, 2] == 'X' ||
+                   board[0, 1] == 'X' && board[1, 1] == 'X' && board[2, 1] == 'X' ||
+                   board[0, 2] == 'X' && board[1, 2] == 'X' && board[2, 2] == 'X' ||
+                   board[0, 0] == 'X' && board[1, 1] == 'X' && board[2, 2] == 'X' ||
+                   board[0, 2] == 'X' && board[1, 1] == 'X' && board[2, 0] == 'X')
+                {
+                    stopPlayer1 = true;
+                    Console.Clear();
+                    Player1Reset();
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Please enter a valid variable, restarting game");
+                throw new Exception("Please use a valid variable");
+            }
+            
+
+        }
+
+        public static void Player2()
+        {
+            regionTaken = false;
+            //second player who is a bot I created
+            Field();
+            Console.WriteLine("please make a move player 2");
+
+            x = rnd.Next(1, 9);
+
+            //seeing if the bot wants to take space ive choosen or them, they are not the brightest....
+            if (x == 1 && board[0, 0] != '1')
+            {
+                regionTaken = true;
+            }
+            else if (x == 2 && board[0, 1] != '2')
+            {
+                regionTaken = true;
+            }
+            else if (x == 3 && board[0, 2] != '3')
+            {
+                regionTaken = true;
+            }
+            else if (x == 4 && board[1, 0] != '4')
+            {
+                regionTaken = true;
+            }
+            else if (x == 5 && board[1, 1] != '5')
+            {
+                regionTaken = true;
+            }
+            else if (x == 6 && board[1, 2] != '6')
+            {
+                regionTaken = true;
+            }
+            else if (x == 7 && board[2, 0] != '7')
+            {
+                regionTaken = true;
+            }
+            else if (x == 8 && board[2, 1] != '8')
+            {
+                regionTaken = true;
+            }
+            else if (x == 9 && board[2, 2] != '9')
+            {
+                regionTaken = true;
+            }
+
+
+            //this IF statements gives player one a turn if the bot messes up
+            if (regionTaken == true)
+            {
+                Console.WriteLine("That spot is taken please try another!");
+                Player1();
+            }
+            switch (x)
+            {
+                case 1: board[0, 0] = 'O'; break;
+                case 2: board[0, 1] = 'O'; break;
+                case 3: board[0, 2] = 'O'; break;
+                case 4: board[1, 0] = 'O'; break;
+                case 5: board[1, 1] = 'O'; break;
+                case 6: board[1, 2] = 'O'; break;
+                case 7: board[2, 0] = 'O'; break;
+                case 8: board[2, 1] = 'O'; break;
+                case 9: board[2, 2] = 'O'; break;
+
+            }
+
+
+
+            if (board[0, 0] == 'O' && board[1, 0] == 'O' && board[2, 0] == 'O' ||
+                   board[0, 0] == 'O' && board[0, 1] == 'O' && board[0, 2] == 'O' ||
+                   board[1, 0] == 'O' && board[1, 1] == 'O' && board[1, 2] == 'O' ||
+                   board[2, 0] == 'O' && board[2, 1] == 'O' && board[2, 2] == 'O' ||
+                   board[0, 1] == 'O' && board[1, 1] == 'O' && board[2, 1] == 'O' ||
+                   board[0, 2] == 'O' && board[1, 2] == 'O' && board[2, 2] == 'O' ||
+                   board[0, 0] == 'O' && board[1, 1] == 'O' && board[2, 2] == 'O' ||
+                   board[0, 2] == 'O' && board[1, 1] == 'O' && board[2, 0] == 'O')
+
+            {
+                stopPlayer2 = true;
+                Console.Clear();
+                Player2Reset();
+            }
+            /* no console clear for player 1 because if the bot chooses and invalid location
+              the player can see what happened */
+            Console.Clear();
+        }
+    }
+
+}
